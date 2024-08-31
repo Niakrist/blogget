@@ -1,6 +1,7 @@
 import { Layout } from "../Layout/Layout";
 import Auth from "./Auth";
 import style from "./Header.module.css";
+import Heading from "./Heading";
 import Logo from "./Logo";
 import Search from "./Search";
 
@@ -10,7 +11,7 @@ export const Header = () => {
       <Layout>
         <div className={style.gridContainer}>
           <Logo />
-          <h1>Заголовок</h1>
+          <Heading text="Главная" />
           <Search />
           <Auth auth="Maxim" />
         </div>
