@@ -12,7 +12,7 @@ export const Header = () => {
           <Logo />
           <h1>Заголовок</h1>
           <Search />
-          <Auth />
+          <Auth auth="Maxim" />
         </div>
       </Layout>
     </header>
