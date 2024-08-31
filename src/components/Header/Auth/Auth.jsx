@@ -1,4 +1,5 @@
 import style from "./Auth.module.css";
+import PropTypes from "prop-types";
 
 export const Auth = ({ auth }) => {
   return (
@@ -24,4 +25,8 @@ export const Auth = ({ auth }) => {
       )}
     </button>
   );
+};
+
+Auth.propTypes = {
+  auth: PropTypes.string.isRequired,
 };
