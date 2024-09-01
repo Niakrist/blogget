@@ -12,5 +12,5 @@ export const ButtonDelete = ({ onDelete, date }) => {
 
 ButtonDelete.propTypes = {
   onDelete: PropTypes.func.isRequired,
-  date: PropTypes.string.date,
+  date: PropTypes.string.isRequired,
 };

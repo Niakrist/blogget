@@ -40,8 +40,8 @@ export const List = () => {
   };
   return (
     <ul className={style.list}>
-      {postData.map((data) => (
-        <Post key={data.date} data={data} onDelete={handleDelete} />
+      {postData.map((post) => (
+        <Post key={post.date} post={post} onDelete={handleDelete} />
       ))}
     </ul>
   );

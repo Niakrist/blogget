@@ -5,8 +5,8 @@ import Rating from "./Rating";
 import Time from "./Time";
 import ButtonDelete from "./ButtonDelete";
 
-export const Post = ({ data, onDelete }) => {
-  const { title, author, ups, date } = data;
+export const Post = ({ post, onDelete }) => {
+  const { title, author, ups, date } = post;
   return (
     <li className={style.post}>
       <img className={style.img} src={notPhotoSrc} alt={title} />
@@ -28,6 +28,6 @@ export const Post = ({ data, onDelete }) => {
 };
 
 Post.propTypes = {
-  data: PropTypes.object,
-  onDelete: PropTypes.func.isRequired,
+  post: PropTypes.object,
+  onDelete: PropTypes.func,
 };
