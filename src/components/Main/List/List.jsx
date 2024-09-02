@@ -34,14 +34,14 @@ const initData = [
 ];
 
 export const List = () => {
-  const [postData, setPostData] = useState(initData);
+  const [postsData, setPostData] = useState(initData);
   const handleDelete = (date) => {
-    setPostData(postData.filter((data) => data.date !== date));
+    setPostData(postsData.filter((postData) => postData.date !== date));
   };
   return (
     <ul className={style.list}>
-      {postData.map((post) => (
-        <Post key={post.date} post={post} onDelete={handleDelete} />
+      {postsData.map((postData) => (
+        <Post key={postData.date} post={postData} onDelete={handleDelete} />
       ))}
     </ul>
   );
