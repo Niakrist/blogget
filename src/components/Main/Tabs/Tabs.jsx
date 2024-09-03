@@ -21,8 +21,9 @@ export const Tabs = () => {
   const [tabs] = useState(LIST);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
+  const [itemMenu, setItemMenu] = useState("Меню");
 
-  const show = () => {
+  const selectItemMenu = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
@@ -45,8 +46,8 @@ export const Tabs = () => {
     <div className={style.container}>
       <div className={style.wrapperBtn}>
         {isDropDown && (
-          <button className={style.btn} onClick={show}>
-            show
+          <button className={style.btn} onClick={selectItemMenu}>
+            {itemMenu}
             <ArrowIcon width={16} height={16} />
           </button>
         )}
@@ -55,7 +56,7 @@ export const Tabs = () => {
         <ul className={style.list} onClick={() => setIsDropdownOpen(false)}>
           {tabs.map(({ value, id, Icon }) => (
             <li className={style.item} key={id}>
-              <button className={style.btn} onClick={() => console.log(value)}>
+              <button className={style.btn} onClick={() => setItemMenu(value)}>
                 {value} {Icon && <Icon width={30} height={30} />}
               </button>
             </li>
