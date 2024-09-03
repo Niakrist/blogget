@@ -4,6 +4,7 @@ import notPhotoSrc from "./img/notphoto.jpg";
 import Rating from "./Rating";
 import Time from "./Time";
 import ButtonDelete from "./ButtonDelete";
+import { Text } from "../../../../ui/Text";
 
 export const Post = ({ post, onDelete }) => {
   const { title, author, ups, date } = post;
@@ -11,14 +12,27 @@ export const Post = ({ post, onDelete }) => {
     <li className={style.post}>
       <img className={style.img} src={notPhotoSrc} alt={title} />
       <div className={style.content}>
-        <h2 className={style.title}>
-          <a className={style.linkPost} href="#post">
+        <Text As="h2" className={style.title}>
+          <Text
+            As="a"
+            size={18}
+            tsize={24}
+            className={style.linkPost}
+            href="#post"
+          >
             {title}
-          </a>
-        </h2>
-        <a className={style.linkAuthor} href="#author">
+          </Text>
+        </Text>
+        <Text
+          As="a"
+          size={12}
+          tsize={14}
+          color={"orange"}
+          className={style.linkAuthor}
+          href="#author"
+        >
           {author}
-        </a>
+        </Text>
       </div>
       <Rating ups={ups} />
       <Time date={date} />

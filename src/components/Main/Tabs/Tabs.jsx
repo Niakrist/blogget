@@ -9,6 +9,7 @@ import { ReactComponent as TopIcon } from "./img/top.svg";
 import { ReactComponent as BestIcon } from "./img/best.svg";
 import { ReactComponent as HotIcon } from "./img/hot.svg";
 import { debounceRaf } from "../../../utils/debounce";
+import { Text } from "../../../ui/Text";
 
 const LIST = [
   { value: "Главная", Icon: HomeIcon },
@@ -46,19 +47,23 @@ export const Tabs = () => {
     <div className={style.container}>
       <div className={style.wrapperBtn}>
         {isDropDown && (
-          <button className={style.btn} onClick={selectItemMenu}>
+          <Text As="button" bold className={style.btn} onClick={selectItemMenu}>
             {itemMenu}
             <ArrowIcon width={16} height={16} />
-          </button>
+          </Text>
         )}
       </div>
       {(isDropdownOpen || !isDropDown) && (
         <ul className={style.list} onClick={() => setIsDropdownOpen(false)}>
           {tabs.map(({ value, id, Icon }) => (
             <li className={style.item} key={id}>
-              <button className={style.btn} onClick={() => setItemMenu(value)}>
+              <Text
+                As="button"
+                className={style.btn}
+                onClick={() => setItemMenu(value)}
+              >
                 {value} {Icon && <Icon width={30} height={30} />}
-              </button>
+              </Text>
             </li>
           ))}
         </ul>
