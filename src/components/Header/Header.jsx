@@ -4,8 +4,9 @@ import style from "./Header.module.css";
 import Heading from "./Heading";
 import Logo from "./Logo";
 import Search from "./Search";
+import PropTypes from "prop-types";
 
-export const Header = () => {
+export const Header = ({ token }) => {
   return (
     <header className={style.header}>
       <Layout>
@@ -13,9 +14,13 @@ export const Header = () => {
           <Logo />
           <Heading text="Главная" />
           <Search />
-          <Auth auth="Maxim" />
+          <Auth token={token} />
         </div>
       </Layout>
     </header>
   );
+};
+
+Header.propTypes = {
+  token: PropTypes.string,
 };
