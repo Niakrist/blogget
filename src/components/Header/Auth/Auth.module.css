@@ -63,6 +63,19 @@
   color: var(--orange);
 }
 
+.login {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--green);
+  border: 0;
+  color: var(--white);
+  padding: 4px;
+  border-radius: 6px;
+  font-size: 8px;
+  cursor: pointer;
+}
+
 @media (min-width: 768px) {
   .btn {
     border-radius: 15px;

@@ -3,14 +3,15 @@ import { Text } from "../../../ui/Text";
 import { ReactComponent as LoginIcon } from "./img/login.svg";
 import { urlAuth } from "../../../api/auth";
 import style from "./Auth.module.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Logout } from "./Logout";
-import { useAuth } from "../../../api/hooks/useAuth";
+import { TokenContext } from "../../../context/tokenContext";
+import { AuthContext } from "../../../context/authContext";
 
-export const Auth = ({ token, delToken }) => {
+export const Auth = () => {
+  const { auth, clearAuth } = useContext(AuthContext);
   const [isLogout, setIsLogout] = useState(false);
-
-  const auth = useAuth(token);
+  const { delToken } = useContext(TokenContext);
 
   const handleClick = () => {
     setIsLogout((prevState) => !prevState);
@@ -19,7 +20,7 @@ export const Auth = ({ token, delToken }) => {
   return (
     <>
       <div className={style.container}>
-        {auth.name ? (
+        {auth?.name ? (
           <div>
             <button className={style.btn} onClick={handleClick}>
               <img
@@ -30,9 +31,9 @@ export const Auth = ({ token, delToken }) => {
               />
             </button>
             {!isLogout ? (
-              <Text>{auth.name}</Text>
+              <Text className={style.login}>{auth.name}</Text>
             ) : (
-              <Logout auth={auth} delToken={delToken} />
+              <Logout clearAuth={clearAuth} delToken={delToken} />
             )}
           </div>
         ) : (

@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { URL_API } from "../const";
+import { TokenContext } from "../../context/tokenContext";
 
-export const useAuth = (token) => {
+export const useAuth = () => {
+  const { token, delToken } = useContext(TokenContext);
   const [auth, setAuth] = useState({});
   useEffect(() => {
     if (!token) return;
@@ -20,11 +22,16 @@ export const useAuth = (token) => {
         setAuth({ name, img });
       } catch (error) {
         console.log("Отлов ошибки! ", error);
-        localStorage.removeItem("bearer");
         setAuth({});
+        delToken();
       }
     };
     fetchToken();
-  }, [token]);
-  return [auth];
+  }, [token, delToken]);
+
+  const clearAuth = () => {
+    setAuth();
+  };
+
+  return [auth, clearAuth];
 };
