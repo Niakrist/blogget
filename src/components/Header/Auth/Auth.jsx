@@ -8,11 +8,9 @@ import { Logout } from "./Logout";
 import { useAuth } from "../../../api/hooks/useAuth";
 
 export const Auth = ({ token, delToken }) => {
-  const [auth, setAuth] = useState({});
-
   const [isLogout, setIsLogout] = useState(false);
 
-  useAuth(token, setAuth);
+  const auth = useAuth(token);
 
   const handleClick = () => {
     setIsLogout((prevState) => !prevState);

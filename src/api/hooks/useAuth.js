@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { URL_API } from "../const";
 
-export const useAuth = (token, setAuth) => {
+export const useAuth = (token) => {
+  const [auth, setAuth] = useState({});
   useEffect(() => {
     if (!token) return;
     const fetchToken = async () => {
@@ -25,4 +26,5 @@ export const useAuth = (token, setAuth) => {
     };
     fetchToken();
   }, [token]);
+  return [auth];
 };
