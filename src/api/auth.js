@@ -18,3 +18,4 @@ searchParams.append("redirect_uri", REDIRECT_URI);
 searchParams.append("scope", SCOPE_STRING);
 
 export const urlAuth = `${URL_AUTH}${searchParams.toString()}`;
+export const bestPostsUrl = searchParams.toString();
