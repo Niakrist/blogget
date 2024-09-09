@@ -1,40 +1,52 @@
-import { useContext, useEffect, useState } from "react";
-import {
-  CLIENT_ID,
-  RANDOM_STRING,
-  RESPONSE_TYPE,
-  SCOPE_STRING,
-  URL_API,
-} from "../const";
-import { TokenContext } from "../../context/tokenContext";
+import { useEffect, useState } from "react";
+import { URL_API } from "../const";
+import { useToken } from "./useToken";
 
 export const useBestPosts = () => {
   const [bestPosts, setBestPosts] = useState([]);
-  const { token } = useContext(TokenContext);
+  const [token] = useToken();
 
   useEffect(() => {
     try {
       const fetchBestPosts = async () => {
-        // const url = new URL(URL_API);
-        // url.searchParams.append("client_id", CLIENT_ID);
-        // url.searchParams.append("response_type", RESPONSE_TYPE);
-        // url.searchParams.append("state", RANDOM_STRING);
-        // url.searchParams.append("scope", SCOPE_STRING);
-
-        const response = await fetch(`${URL_API}/api/v1/best`, {
+        const response = await fetch(`${URL_API}/best`, {
           headers: {
             Authorization: `bearer ${token}`,
           },
         });
-        console.log("response: ", response);
-        const data = await response.json();
-        setBestPosts(data);
+
+        if (!response.ok) {
+          throw new Error("Ошибка при получении Best Posts");
+        }
+
+        const { data } = await response.json();
+        setBestPosts(data.children);
       };
-      fetchBestPosts();
-      console.log("bestPosts: ", bestPosts);
+
+      if (token) {
+        fetchBestPosts();
+      }
     } catch (error) {
       console.log(`Ошибка при получении Best Posts: ${error}`);
     }
-  }, []);
-  return bestPosts;
+  }, [token]);
+
+  const bestPostsData = [];
+  if (bestPosts) {
+    for (const item of bestPosts) {
+      bestPostsData.push({
+        id: item.data.id,
+        author: item.data.author,
+        // created: item.data.created,
+        createdUtc: item.data.created_utc,
+        // postHint: item.data.post_hint,
+        // score: item.data.score,
+        ups: item.data.ups,
+        title: item.data.title,
+        thumbnail: item.data.thumbnail,
+      });
+    }
+  }
+
+  return bestPostsData;
 };

@@ -11,5 +11,5 @@ export const Time = ({ date }) => {
 };
 
 Time.propTypes = {
-  date: PropTypes.string.isRequired,
+  date: PropTypes.number.isRequired,
 };

@@ -7,10 +7,11 @@ import ButtonDelete from "./ButtonDelete";
 import { Text } from "../../../../ui/Text";
 
 export const Post = ({ post, onDelete }) => {
-  const { title, author, ups, date } = post;
+  const { id, title, author, ups, thumbnail, createdUtc } = post;
+
   return (
     <li className={style.post}>
-      <img className={style.img} src={notPhotoSrc} alt={title} />
+      <img className={style.img} src={thumbnail || notPhotoSrc} alt={title} />
       <div className={style.content}>
         <Text As="h2" className={style.title}>
           <Text
@@ -18,8 +19,7 @@ export const Post = ({ post, onDelete }) => {
             size={18}
             tsize={24}
             className={style.linkPost}
-            href="#post"
-          >
+            href="#post">
             {title}
           </Text>
         </Text>
@@ -29,14 +29,13 @@ export const Post = ({ post, onDelete }) => {
           tsize={14}
           color={"orange"}
           className={style.linkAuthor}
-          href="#author"
-        >
+          href="#author">
           {author}
         </Text>
       </div>
       <Rating ups={ups} />
-      <Time date={date} />
-      <ButtonDelete date={date} onDelete={onDelete} />
+      <Time date={createdUtc} />
+      <ButtonDelete id={id} onDelete={onDelete} />
     </li>
   );
 };

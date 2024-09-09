@@ -12,7 +12,7 @@ export const useToken = () => {
     if (localStorage.getItem("bearer")) {
       setToken(localStorage.getItem("bearer"));
     }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (token) {
