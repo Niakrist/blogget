@@ -31,6 +31,8 @@ export const useBestPosts = () => {
     }
   }, [token]);
 
+  console.log("bestPosts: ", bestPosts);
+
   const bestPostsData = [];
   if (bestPosts) {
     for (const item of bestPosts) {
@@ -42,6 +44,7 @@ export const useBestPosts = () => {
         // postHint: item.data.post_hint,
         // score: item.data.score,
         ups: item.data.ups,
+        markdown: item.data.selftext,
         title: item.data.title,
         thumbnail: item.data.thumbnail,
       });
