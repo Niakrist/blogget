@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { URL_API } from "../const";
-import { useToken } from "./useToken";
+import { useToken } from "../token";
 
 export const useBestPosts = () => {
   const [bestPosts, setBestPosts] = useState([]);

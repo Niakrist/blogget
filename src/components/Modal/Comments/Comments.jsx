@@ -41,7 +41,8 @@ export const Comments = ({ comments }) => {
         <button
           onClick={() => setPage(item)}
           className={item === page ? style.paginationActive : style.pagination}
-          key={item}>
+          key={item}
+        >
           {item}
         </button>
       ))}

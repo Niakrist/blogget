@@ -1,12 +1,16 @@
-import { useEffect } from "react";
-import { useRef, useState } from "react";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../../context/authContext";
 import { Text } from "../../../ui/Text";
 import style from "./FormComment.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { actionUpdateComment } from "../../../store";
 
 export const FormComment = () => {
   const [isFormComment, setIsFormComment] = useState(false);
+
+  const dispacth = useDispatch();
+
+  const value = useSelector((state) => state.comment);
   const { auth } = useContext(AuthContext);
   const refTextarea = useRef();
 
@@ -22,8 +26,11 @@ export const FormComment = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`refTextarea: ${refTextarea.current.value}`);
-    refTextarea.current.value = "";
+    console.log(value);
+  };
+
+  const handleChange = (e) => {
+    dispacth(actionUpdateComment(e.target.value));
   };
 
   return (
@@ -32,7 +39,8 @@ export const FormComment = () => {
         onClick={handleClick}
         className={
           !isFormComment ? style.btnSendComment : style.btnDontSendComment
-        }>
+        }
+      >
         {!isFormComment
           ? "Написать комментарий"
           : "Не хочу оставлять комментарий"}
@@ -43,7 +51,12 @@ export const FormComment = () => {
             Имя авторизованного пользователя:{" "}
             <span className={style.auth}>{auth.name}</span>
           </Text>
-          <textarea ref={refTextarea} className={style.textarea}></textarea>
+          <textarea
+            value={value}
+            onChange={handleChange}
+            ref={refTextarea}
+            className={style.textarea}
+          ></textarea>
           <button onClick={handleSubmit} className={style.btn}>
             Отправить
           </button>

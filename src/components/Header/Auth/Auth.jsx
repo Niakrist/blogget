@@ -5,7 +5,7 @@ import { urlAuth } from "../../../api/auth";
 import style from "./Auth.module.css";
 import { useContext, useState } from "react";
 import { Logout } from "./Logout";
-import { TokenContext } from "../../../context/tokenContext";
+import { TokenContext } from "../../../context/delete_tokenContext";
 import { AuthContext } from "../../../context/authContext";
 
 export const Auth = () => {

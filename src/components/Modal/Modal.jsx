@@ -41,8 +41,6 @@ export const Modal = ({ closeModal, id }) => {
     }
   }, [commentsData]);
 
-  console.log("comments: ", comments);
-
   const handleClick = ({ target }) => {
     if (target === overlayRef.current) {
       closeModal();
@@ -86,7 +84,8 @@ export const Modal = ({ closeModal, id }) => {
                         },
                       },
                     },
-                  }}>
+                  }}
+                >
                   {post.markdown}
                 </Markdown>
               </div>
