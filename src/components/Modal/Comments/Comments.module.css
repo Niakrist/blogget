@@ -1,0 +1,48 @@
+.list {
+  padding: 15px 0;
+}
+
+.item {
+  margin-bottom: 20px;
+}
+
+.author {
+  margin-bottom: 10px;
+}
+
+.comment {
+  white-space: pre-line;
+}
+
+.pagination {
+  margin: 3px;
+  width: 25px;
+  height: 25px;
+  border-radius: 8px;
+  border: 1px solid #8f8f8f;
+  transition: background-color 0.2s;
+}
+
+.pagination:hover {
+  background-color: #8f8f8f;
+}
+
+.paginationActive {
+  margin: 3px;
+  width: 25px;
+  height: 25px;
+  border-radius: 8px;
+  border: 1px solid #8f8f8f;
+  background-color: #4d70a0;
+  transition: background-color 0.2s;
+}
+
+@media (min-width: 768px) {
+  .list {
+    padding: 30px 0;
+  }
+
+  .item {
+    margin-bottom: 30px;
+  }
+}

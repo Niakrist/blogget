@@ -4,7 +4,7 @@ import style from "./Content.module.css";
 import { Modal } from "../../../../Modal/Modal";
 import PropTypes from "prop-types";
 
-export const Content = ({ title, author, markdown }) => {
+export const Content = ({ title, author, markdown, id }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const closeModal = () => {
@@ -20,8 +20,7 @@ export const Content = ({ title, author, markdown }) => {
           tsize={24}
           className={style.linkPost}
           href="#post"
-          onClick={() => setIsModalOpen(true)}
-        >
+          onClick={() => setIsModalOpen(true)}>
           {title}
         </Text>
       </Text>
@@ -31,11 +30,10 @@ export const Content = ({ title, author, markdown }) => {
         tsize={14}
         color={"orange"}
         className={style.linkAuthor}
-        href="#author"
-      >
+        href="#author">
         {author}
       </Text>
-      {isModalOpen && <Modal {...{ title, author, markdown, closeModal }} />}
+      {isModalOpen && <Modal {...{ closeModal, id }} />}
     </div>
   );
 };

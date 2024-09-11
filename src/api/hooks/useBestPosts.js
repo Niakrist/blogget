@@ -7,8 +7,8 @@ export const useBestPosts = () => {
   const [token] = useToken();
 
   useEffect(() => {
-    try {
-      const fetchBestPosts = async () => {
+    const fetchBestPosts = async () => {
+      try {
         const response = await fetch(`${URL_API}/best`, {
           headers: {
             Authorization: `bearer ${token}`,
@@ -21,17 +21,15 @@ export const useBestPosts = () => {
 
         const { data } = await response.json();
         setBestPosts(data.children);
-      };
-
-      if (token) {
-        fetchBestPosts();
+      } catch (error) {
+        console.log(`Ошибка при получении Best Posts: ${error}`);
       }
-    } catch (error) {
-      console.log(`Ошибка при получении Best Posts: ${error}`);
+    };
+
+    if (token) {
+      fetchBestPosts();
     }
   }, [token]);
-
-  console.log("bestPosts: ", bestPosts);
 
   const bestPostsData = [];
   if (bestPosts) {

@@ -12,7 +12,7 @@ export const Post = ({ post, onDelete }) => {
   return (
     <li className={style.post}>
       <img className={style.img} src={thumbnail || notPhotoSrc} alt={title} />
-      <Content title={title} author={author} markdown={markdown} />
+      <Content title={title} author={author} markdown={markdown} id={id} />
       <Rating ups={ups} />
       <Time date={createdUtc} />
       <ButtonDelete id={id} onDelete={onDelete} />

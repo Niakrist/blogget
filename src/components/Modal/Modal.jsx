@@ -4,12 +4,53 @@ import PropTypes from "prop-types";
 import Markdown from "markdown-to-jsx";
 import ReactDOM from "react-dom";
 import { useEffect, useRef } from "react";
+import { useCommentsData } from "../../api/hooks/useCommentsData";
+import { useState } from "react";
+import FormComment from "./FormComment";
+import Comments from "./Comments";
 
-export const Modal = ({ title, author, markdown, closeModal }) => {
+export const Modal = ({ closeModal, id }) => {
+  const [post, setPost] = useState();
+  const [comments, setComments] = useState([]);
+  const commentsData = useCommentsData(id);
   const overlayRef = useRef();
+
+  useEffect(() => {
+    if (commentsData) {
+      const { data } = commentsData[0];
+      for (const item of commentsData[1].data.children) {
+        if (item.data.id && item.data.author && item.data.created) {
+          setComments((prevState) => [
+            ...prevState,
+            {
+              idComment: item.data.id,
+              authorComment: item.data.author,
+              textComment: item.data.body,
+              createdComment: item.data.created,
+              upsComment: item.data.ups,
+            },
+          ]);
+        }
+      }
+      setPost({
+        id: data.children[0].data.id,
+        title: data.children[0].data.title,
+        author: data.children[0].data.author,
+        markdown: data.children[0].data.selftext,
+      });
+    }
+  }, [commentsData]);
+
+  console.log("comments: ", comments);
 
   const handleClick = ({ target }) => {
     if (target === overlayRef.current) {
+      closeModal();
+    }
+  };
+
+  const handleKeydown = ({ keyCode }) => {
+    if (keyCode === 27) {
       closeModal();
     }
   };
@@ -19,29 +60,50 @@ export const Modal = ({ title, author, markdown, closeModal }) => {
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeydown);
+    return () => {
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  }, []);
 
   return ReactDOM.createPortal(
     <div className={style.overlay} ref={overlayRef}>
       <div className={style.modal}>
-        <h2 className={style.title}>{title}</h2>
-        <div className={style.content}>
-          <Markdown
-            options={{
-              overrides: {
-                a: {
-                  props: {
-                    target: "_blank",
-                  },
-                },
-              },
-            }}
-          >
-            {markdown}
-          </Markdown>
-        </div>
-        <p className={style.author}>{author}</p>
-        <button className={style.close}>
+        <h2 className={style.title}>{post ? post.title : "Загрузка..."}</h2>
+        {post && (
+          <>
+            {post.markdown ? (
+              <div className={style.content}>
+                <Markdown
+                  options={{
+                    overrides: {
+                      a: {
+                        props: {
+                          target: "_blank",
+                        },
+                      },
+                    },
+                  }}>
+                  {post.markdown}
+                </Markdown>
+              </div>
+            ) : (
+              <div className={style.noText}>В этой записи текста нет!</div>
+            )}
+            <p className={style.author}>Автор поста: {post.author}</p>
+            <FormComment />
+            {comments.length > 0 ? (
+              <Comments comments={comments} />
+            ) : (
+              <div>Комментариев нет!</div>
+            )}
+          </>
+        )}
+
+        <button className={style.close} onClick={closeModal}>
           <CloseSrc />
         </button>
       </div>
@@ -55,4 +117,5 @@ Modal.propTypes = {
   author: PropTypes.string,
   markdown: PropTypes.string,
   closeModal: PropTypes.func,
+  comments: PropTypes.array,
 };
