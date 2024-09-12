@@ -10,9 +10,7 @@ export const useAuth = () => {
   const dispatch = useDispatch();
 
   const { token } = useSelector((state) => state.token);
-  console.log(token);
 
-  console.log("token: ", token);
   const [auth, setAuth] = useState({});
   useEffect(() => {
     if (!token) return;

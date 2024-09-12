@@ -1,10 +1,10 @@
-import { getToken } from "../api/token";
+import { setToken } from "../api/token";
 
 const UPDATE_TOKEN = "UPDATE_TOKEN";
 const DELETE_TOKEN = "DELETE_TOKEN";
 
 const initionalState = {
-  token: getToken(),
+  token: "",
 };
 
 export const actionUpdateToken = (token) => {
@@ -14,6 +14,17 @@ export const actionUpdateToken = (token) => {
 export const actionDeleteToken = () => {
   localStorage.removeItem("bearer");
   return { type: DELETE_TOKEN };
+};
+
+export const tokenMiddleaware = (store) => (next) => (action) => {
+  if (action.type === UPDATE_TOKEN) {
+    setToken(action.token);
+  }
+
+  if (action.type === DELETE_TOKEN) {
+    setToken("");
+  }
+  next(action);
 };
 
 export const tokenReducer = (state = initionalState, action) => {
