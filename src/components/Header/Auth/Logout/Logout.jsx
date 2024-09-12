@@ -2,7 +2,7 @@ import { Text } from "../../../../ui/Text";
 import style from "./Logout.module.css";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { actionDeleteToken } from "../../../../store";
+import { actionDeleteToken } from "../../../../store/tokenReducer.js";
 
 const Logout = ({ clearAuth }) => {
   const dispatch = useDispatch();

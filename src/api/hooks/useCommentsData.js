@@ -5,7 +5,7 @@ import { URL_API } from "../const";
 export const useCommentsData = (id) => {
   const [commentsData, setCommentsData] = useState();
   // const [token] = useToken();
-  const token = useSelector((state) => state.token);
+  const { token } = useSelector((state) => state.token);
 
   useEffect(() => {
     const fetchCommentsData = async (id) => {

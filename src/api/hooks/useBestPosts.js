@@ -6,7 +6,7 @@ import { URL_API } from "../const";
 export const useBestPosts = () => {
   const [bestPosts, setBestPosts] = useState([]);
 
-  const token = useSelector((state) => state.token);
+  const { token } = useSelector((state) => state.token);
 
   // const [token] = useToken();
 

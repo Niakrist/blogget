@@ -3,14 +3,14 @@ import { AuthContext } from "../../../context/authContext";
 import { Text } from "../../../ui/Text";
 import style from "./FormComment.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { actionUpdateComment } from "../../../store";
+import { actionUpdateComment } from "../../../store/commentReducer.js";
 
 export const FormComment = () => {
   const [isFormComment, setIsFormComment] = useState(false);
 
   const dispacth = useDispatch();
 
-  const value = useSelector((state) => state.comment);
+  const { comment } = useSelector((state) => state.comment);
   const { auth } = useContext(AuthContext);
   const refTextarea = useRef();
 
@@ -26,7 +26,7 @@ export const FormComment = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(value);
+    console.log(comment);
   };
 
   const handleChange = (e) => {
@@ -52,7 +52,7 @@ export const FormComment = () => {
             <span className={style.auth}>{auth.name}</span>
           </Text>
           <textarea
-            value={value}
+            value={comment}
             onChange={handleChange}
             ref={refTextarea}
             className={style.textarea}
