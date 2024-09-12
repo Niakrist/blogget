@@ -1,11 +1,15 @@
 import { Text } from "../../../../ui/Text";
 import style from "./Logout.module.css";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { actionDeleteToken } from "../../../../store";
 
-const Logout = ({ delToken, clearAuth }) => {
+const Logout = ({ clearAuth }) => {
+  const dispatch = useDispatch();
+
   const handleClick = () => {
     console.log("токен удален");
-    delToken();
+    dispatch(actionDeleteToken());
     clearAuth();
   };
 

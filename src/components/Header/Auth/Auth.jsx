@@ -5,13 +5,13 @@ import { urlAuth } from "../../../api/auth";
 import style from "./Auth.module.css";
 import { useContext, useState } from "react";
 import { Logout } from "./Logout";
-import { TokenContext } from "../../../context/delete_tokenContext";
+// import { TokenContext } from "../../../context/delete_tokenContext";
 import { AuthContext } from "../../../context/authContext";
 
 export const Auth = () => {
   const { auth, clearAuth } = useContext(AuthContext);
   const [isLogout, setIsLogout] = useState(false);
-  const { delToken } = useContext(TokenContext);
+  // const { delToken } = useContext(TokenContext);
 
   const handleClick = () => {
     setIsLogout((prevState) => !prevState);
@@ -33,7 +33,7 @@ export const Auth = () => {
             {!isLogout ? (
               <Text className={style.login}>{auth.name}</Text>
             ) : (
-              <Logout clearAuth={clearAuth} delToken={delToken} />
+              <Logout clearAuth={clearAuth} />
             )}
           </div>
         ) : (

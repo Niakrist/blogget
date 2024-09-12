@@ -1,4 +1,4 @@
-export const setToken = (token) => {
+const setToken = (token) => {
   localStorage.setItem("bearer", token);
 };
 
@@ -11,7 +11,8 @@ export const getToken = () => {
     setToken(token);
   }
   if (localStorage.getItem("bearer")) {
-    token = setToken(localStorage.getItem("bearer"));
+    token = localStorage.getItem("bearer");
   }
+
   return token;
 };

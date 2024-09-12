@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { URL_API } from "../const";
-import { useToken } from "../token";
 
 export const useCommentsData = (id) => {
   const [commentsData, setCommentsData] = useState();
-  const [token] = useToken();
+  // const [token] = useToken();
+  const token = useSelector((state) => state.token);
 
   useEffect(() => {
     const fetchCommentsData = async (id) => {
