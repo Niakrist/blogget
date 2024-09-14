@@ -1,9 +1,9 @@
 import React from "react";
 
-import styles from "./AuthLoader.module.css";
+import { PuffLoader } from "react-spinners";
 
 const AuthLoader = () => {
-  return <div>AuthLoader</div>;
+  return <PuffLoader />;
 };
 
 export default AuthLoader;
