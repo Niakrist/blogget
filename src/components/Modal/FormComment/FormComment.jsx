@@ -1,17 +1,18 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import { AuthContext } from "../../../context/authContext";
+import { useEffect, useRef, useState } from "react";
 import { Text } from "../../../ui/Text";
 import style from "./FormComment.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { actionUpdateComment } from "../../../store/commentReducer.js";
+import { useAuth } from "../../../api/hooks/useAuth.js";
 
 export const FormComment = () => {
   const [isFormComment, setIsFormComment] = useState(false);
 
+  const [auth] = useAuth();
+
   const dispacth = useDispatch();
 
   const { comment } = useSelector((state) => state.comment);
-  const { auth } = useContext(AuthContext);
   const refTextarea = useRef();
 
   const handleClick = () => {

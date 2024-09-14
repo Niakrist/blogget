@@ -1,45 +1,41 @@
 import { useEffect, useState } from "react";
-import { URL_API } from "../const";
 // import { TokenContext } from "../../context/delete_tokenContext";
 import { useDispatch, useSelector } from "react-redux";
-import { actionDeleteToken } from "../../store/tokenReducer.js";
+import { authLogout, authRequestAsync } from "../../store/auth/action.js";
 
 export const useAuth = () => {
   // const { delToken } = useContext(TokenContext);
 
   const dispatch = useDispatch();
-
   const { token } = useSelector((state) => state.token);
+  const auth = useSelector((state) => state.auth.data);
+  const loading = useSelector((state) => state.auth.loading);
 
-  const [auth, setAuth] = useState({});
   useEffect(() => {
-    if (!token) return;
-    const fetchToken = async () => {
-      try {
-        const response = await fetch(`${URL_API}/api/v1/me`, {
-          headers: {
-            Authorization: `bearer ${token}`,
-          },
-        });
-        if (response.status === 401) {
-          throw new Error("Вы не авторизированны, токен удален");
-        }
-        const { name, icon_img: iconImg } = await response.json();
-        const img = iconImg?.replace(/\?.*?/, "");
-        setAuth({ name, img });
-      } catch (error) {
-        console.log("Отлов ошибки! ", error);
-        setAuth({});
-        dispatch(actionDeleteToken());
-        // delToken();
-      }
-    };
-    fetchToken();
+    dispatch(authRequestAsync());
+    // dispatch(authRequest());
+    // axios(`${URL_API}/api/v1/me`, {
+    //   headers: {
+    //     Authorization: `bearer ${token}`,
+    //   },
+    // })
+    //   .then(({ data: { name, icon_img: iconImg } }) => {
+    //     const img = iconImg?.replace(/\?.*?/, "");
+    //     const data = { name, img };
+    //     setAuth(data);
+    //     dispatch(authRequestSuccess(data));
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //     setAuth({});
+    //     dispatch(actionDeleteToken());
+    //     dispatch(authRequestError(err));
+    //   });
   }, [token]);
 
   const clearAuth = () => {
-    setAuth();
+    dispatch(authLogout());
   };
 
-  return [auth, clearAuth];
+  return [auth, loading, clearAuth];
 };

@@ -14,7 +14,7 @@ const Logout = ({ clearAuth }) => {
   };
 
   return (
-    <Text As="a" className={style.logout} onClick={handleClick} href="/">
+    <Text As="div" className={style.logout} onClick={handleClick}>
       Выйти
     </Text>
   );

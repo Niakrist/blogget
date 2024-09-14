@@ -3,13 +3,14 @@ import { Text } from "../../../ui/Text";
 import { ReactComponent as LoginIcon } from "./img/login.svg";
 import { urlAuth } from "../../../api/auth";
 import style from "./Auth.module.css";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Logout } from "./Logout";
-// import { TokenContext } from "../../../context/delete_tokenContext";
-import { AuthContext } from "../../../context/authContext";
+import { useAuth } from "../../../api/hooks/useAuth.js";
+import { AuthLoader } from "./AuthLoader";
 
 export const Auth = () => {
-  const { auth, clearAuth } = useContext(AuthContext);
+  // const { auth, clearAuth } = useContext(AuthContext);
+  const [auth, loading, clearAuth] = useAuth();
   const [isLogout, setIsLogout] = useState(false);
   // const { delToken } = useContext(TokenContext);
 
@@ -19,6 +20,7 @@ export const Auth = () => {
 
   return (
     <>
+      {loading && <AuthLoader />}
       <div className={style.container}>
         {auth?.name ? (
           <div>
