@@ -4,25 +4,34 @@ import { useState } from "react";
 import { PostsContext } from "../../../context/postsContext";
 import style from "./List.module.css";
 import Post from "./Post";
+import { useDispatch, useSelector } from "react-redux";
+import { postDelete } from "../../../store/posts/postsAction";
 
 export const List = () => {
-  const { posts } = useContext(PostsContext);
+  const dispatch = useDispatch();
+  // const { posts } = useContext(PostsContext);
 
-  const [postsData, setPostData] = useState();
+  // console.log("posts: ", posts);
 
-  useEffect(() => {
-    setPostData(posts);
-  }, [posts]);
+  // const [postsData, setPostData] = useState();
 
-  const handleDelete = (date) => {
-    setPostData(postsData.filter((postData) => postData.id !== date));
+  // useEffect(() => {
+  //   setPostData(posts);
+  // }, [posts]);
+
+  const posts = useSelector((state) => state.posts.data);
+
+  console.log("posts: ", posts);
+
+  const handleDelete = (id) => {
+    dispatch(postDelete(id));
   };
 
-  if (!postsData) return <div>Loading...</div>;
+  if (!posts) return <div>Loading...</div>;
 
   return (
     <ul className={style.list}>
-      {postsData.map((post) => (
+      {posts.map((post) => (
         <Post key={post.id} post={post} onDelete={handleDelete} />
       ))}
     </ul>
