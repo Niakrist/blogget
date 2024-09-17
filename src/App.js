@@ -10,12 +10,10 @@ function App() {
   dispatch(actionUpdateToken(getToken()));
 
   return (
-    // <AuthContextProvider>
     <PostsContextProvider>
       <Header />
       <Main />
     </PostsContextProvider>
-    // </AuthContextProvider>
   );
 }
 

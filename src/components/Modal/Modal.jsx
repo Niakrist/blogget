@@ -4,19 +4,27 @@ import PropTypes from "prop-types";
 import Markdown from "markdown-to-jsx";
 import ReactDOM from "react-dom";
 import { useEffect, useRef } from "react";
-import { useCommentsData } from "../../api/hooks/useCommentsData";
 import { useState } from "react";
 import FormComment from "./FormComment";
 import Comments from "./Comments";
+import { useDispatch, useSelector } from "react-redux";
+import { postItemRequestAsunc } from "../../store/postItem/postItemAction";
 
 export const Modal = ({ closeModal, id }) => {
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
-  const commentsData = useCommentsData(id);
+  // const commentsData = useCommentsData(id);
   const overlayRef = useRef();
 
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.token);
+  const commentsData = useSelector((state) => state.postItem.data);
   useEffect(() => {
-    if (commentsData) {
+    dispatch(postItemRequestAsunc(id));
+  }, [token]);
+
+  useEffect(() => {
+    if (commentsData.length) {
       const { data } = commentsData[0];
       for (const item of commentsData[1].data.children) {
         if (item.data.id && item.data.author && item.data.created) {

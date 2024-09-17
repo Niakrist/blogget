@@ -14,7 +14,6 @@ const initialStat = {
 export const postsReducer = (state = initialStat, action) => {
   switch (action.type) {
     case POSTS_REQUEST: {
-      console.log("action.type: ", action.type);
       return {
         ...state,
         isLoading: true,

@@ -6,7 +6,7 @@ import Time from "./Time";
 import ButtonDelete from "./ButtonDelete";
 import Content from "./Content";
 
-export const Post = ({ post, onDelete }) => {
+export const Post = ({ post, onDelete, isLoading }) => {
   const { id, title, author, ups, markdown, thumbnail, createdUtc } = post;
 
   return (

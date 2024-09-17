@@ -31,9 +31,6 @@ export const postsRequestAsync = () => (dispatch, getState) => {
         Authorization: `bearer ${token}`,
       },
     });
-    // if (!response.ok) {
-    //   throw new Error(`Не удалось получиьт посты! Ошибка: ${response.status}`);
-    // }
 
     const { data } = response.data;
 
