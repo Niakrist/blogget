@@ -1,42 +1,35 @@
-// import { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { URL_API } from "../const";
-// import { postItemRequestAsunc } from "../../store/postItem/postItemAction";
+import { useEffect, useState } from "react";
 
-// export const useCommentsData = (id) => {
-//   console.log("id: ", id);
-//   // const [commentsData, setCommentsData] = useState();
-//   // const [token] = useToken();
-//   const { token } = useSelector((state) => state.token);
-//   const commentsData = useSelector((state) => state.postItem.data);
-//   const dispatch = useDispatch();
+export const useCommentsData = (commentData) => {
+  const [post, setPost] = useState();
+  const [comments, setComments] = useState([]);
 
-//   useEffect(() => {
-//     dispatch(postItemRequestAsunc(id));
-//     // const fetchCommentsData = async (id) => {
-//     //   try {
-//     //     const response = await fetch(`${URL_API}/comments/${id}`, {
-//     //       headers: {
-//     //         Authorization: `bearer ${token}`,
-//     //       },
-//     //     });
-
-//     //     if (!response.ok) {
-//     //       throw new Error(
-//     //         `Не удалось получить commentsData! Ошибка: ${response.status}`
-//     //       );
-//     //     }
-
-//     //     const data = await response.json();
-//     //     setCommentsData(data);
-//     //   } catch (error) {
-//     //     console.log(`Не удалось получить commentsData! Ошибка: ${error}`);
-//     //   }
-//     // };
-//     // if (token) {
-//     //   fetchCommentsData(id);
-//     // }
-//   }, [token]);
-//   console.log("commentsData: ", commentsData);
-//   return commentsData;
-// };
+  useEffect(() => {
+    setPost();
+    setComments([]);
+    if (commentData.length) {
+      const { data } = commentData[0];
+      for (const item of commentData[1].data.children) {
+        if (item.data.id && item.data.author && item.data.created) {
+          setComments((prevState) => [
+            ...prevState,
+            {
+              idComment: item.data.id,
+              authorComment: item.data.author,
+              textComment: item.data.body,
+              createdComment: item.data.created,
+              upsComment: item.data.ups,
+            },
+          ]);
+        }
+      }
+      setPost({
+        id: data.children[0].data.id,
+        title: data.children[0].data.title,
+        author: data.children[0].data.author,
+        markdown: data.children[0].data.selftext,
+      });
+    }
+  }, [commentData]);
+  return [post, comments];
+};

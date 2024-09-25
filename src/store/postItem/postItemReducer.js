@@ -6,7 +6,7 @@ import {
 } from "./postItemAction";
 
 const initialState = {
-  isLoading: false,
+  isLoading: true,
   data: [],
   error: null,
 };
@@ -17,19 +17,23 @@ export const postItemReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: true,
+        data: [],
         error: null,
       };
     case POST_ITEM_REQUEST_SUCCESS:
-      return {
+      const el = {
         ...state,
         isLoading: false,
         data: action.data,
         error: null,
       };
+      console.log("action.data: ", action.data);
+      return el;
     case POST_ITEM_REQUEST_ERROR:
       return {
         ...state,
         isLoading: false,
+        data: [],
         error: action.error,
       };
     case POST_ITEM_DELETE:

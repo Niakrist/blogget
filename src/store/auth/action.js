@@ -25,6 +25,7 @@ export const authLogout = () => {
 
 export const authRequestAsync = () => (dispatch, getState) => {
   const token = getState().token.token;
+
   if (!token) return;
   const fetchToken = async () => {
     dispatch(authRequest());
@@ -35,15 +36,18 @@ export const authRequestAsync = () => (dispatch, getState) => {
         },
       });
 
+      if (response.status === 401) {
+        throw new Error("Вы не авторизированы");
+      }
+
       const {
         data: { name, icon_img: iconImg },
       } = response;
       const img = iconImg?.replace(/\?.*?/, "");
       dispatch(authRequestSuccess({ name, img }));
     } catch (error) {
-      console.log("Отлов ошибки! ", error);
+      console.log("Перехват ошибки! ", error);
       dispatch(actionDeleteToken());
-      // delToken();
       dispatch(authRequestError(error.toString()));
     }
   };

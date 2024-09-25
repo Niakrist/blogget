@@ -6,7 +6,7 @@ import style from "./Auth.module.css";
 import { useState } from "react";
 import { Logout } from "./Logout";
 import { useAuth } from "../../../api/hooks/useAuth.js";
-import { AuthLoader } from "./AuthLoader";
+import { Preloader } from "../../../ui/Preloader/index.js";
 
 export const Auth = () => {
   // const { auth, clearAuth } = useContext(AuthContext);
@@ -20,7 +20,7 @@ export const Auth = () => {
 
   return (
     <>
-      {loading && <AuthLoader />}
+      {loading && <Preloader size="30px" />}
       <div className={style.container}>
         {auth?.name ? (
           <div>

@@ -26,13 +26,42 @@ export const postItemRequestAsunc = (id) => (dispatch, getState) => {
   const { token } = getState().token;
   if (!token) return;
   const fetchPostIten = async () => {
-    const response = await axios.get(`${URL_API}/comments/${id}`, {
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
-    });
+    dispatch(postItemRequest());
+    try {
+      let post = {};
+      const comments = [];
+      const response = await axios.get(`${URL_API}/comments/${id}`, {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      });
 
-    dispatch(postItemRequestSuccess(response.data));
+      const { data } = response.data[0];
+
+      for (const item of response.data[1].data.children) {
+        if (item.data.id && item.data.author && item.data.created) {
+          comments.push({
+            idComment: item.data.id,
+            authorComment: item.data.author,
+            textComment: item.data.body,
+            createdComment: item.data.created,
+            upsComment: item.data.ups,
+          });
+        }
+      }
+
+      post = {
+        id: data.children[0].data.id,
+        title: data.children[0].data.title,
+        author: data.children[0].data.author,
+        markdown: data.children[0].data.selftext,
+      };
+
+      dispatch(postItemRequestSuccess([post, comments]));
+    } catch (error) {
+      console.log(`Перехват ошибки: ${error}`);
+      dispatch(postItemRequestError(error));
+    }
   };
   fetchPostIten();
 };

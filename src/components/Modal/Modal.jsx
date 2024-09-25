@@ -9,45 +9,26 @@ import FormComment from "./FormComment";
 import Comments from "./Comments";
 import { useDispatch, useSelector } from "react-redux";
 import { postItemRequestAsunc } from "../../store/postItem/postItemAction";
+import { useCommentsData } from "../../api/hooks/useCommentsData";
+import { Preloader } from "../../ui/Preloader";
 
 export const Modal = ({ closeModal, id }) => {
-  const [post, setPost] = useState();
-  const [comments, setComments] = useState([]);
-  // const commentsData = useCommentsData(id);
   const overlayRef = useRef();
 
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.token);
-  const commentsData = useSelector((state) => state.postItem.data);
+
+  const { isLoading, error } = useSelector((state) => state.postItem);
+  const [post, comments] = useSelector((state) => state.postItem.data);
+
   useEffect(() => {
     dispatch(postItemRequestAsunc(id));
   }, [token]);
 
   useEffect(() => {
-    if (commentsData.length) {
-      const { data } = commentsData[0];
-      for (const item of commentsData[1].data.children) {
-        if (item.data.id && item.data.author && item.data.created) {
-          setComments((prevState) => [
-            ...prevState,
-            {
-              idComment: item.data.id,
-              authorComment: item.data.author,
-              textComment: item.data.body,
-              createdComment: item.data.created,
-              upsComment: item.data.ups,
-            },
-          ]);
-        }
-      }
-      setPost({
-        id: data.children[0].data.id,
-        title: data.children[0].data.title,
-        author: data.children[0].data.author,
-        markdown: data.children[0].data.selftext,
-      });
-    }
-  }, [commentsData]);
+    console.log("isLoading: ", isLoading);
+    console.log("error: ", error);
+  }, [isLoading, error]);
 
   const handleClick = ({ target }) => {
     if (target === overlayRef.current) {
@@ -74,42 +55,49 @@ export const Modal = ({ closeModal, id }) => {
       document.removeEventListener("keydown", handleKeydown);
     };
   }, []);
-
+  console.log("error: ", error);
   return ReactDOM.createPortal(
     <div className={style.overlay} ref={overlayRef}>
       <div className={style.modal}>
-        <h2 className={style.title}>{post ? post.title : "Загрузка..."}</h2>
-        {post && (
+        {isLoading ? (
+          <Preloader size="100px" />
+        ) : error ? (
+          <div>Возникла ошибка: {error.message} </div>
+        ) : (
           <>
-            {post.markdown ? (
-              <div className={style.content}>
-                <Markdown
-                  options={{
-                    overrides: {
-                      a: {
-                        props: {
-                          target: "_blank",
+            <h2 className={style.title}>{post.title}</h2>
+            {post && (
+              <>
+                {post.markdown ? (
+                  <div className={style.content}>
+                    <Markdown
+                      options={{
+                        overrides: {
+                          a: {
+                            props: {
+                              target: "_blank",
+                            },
+                          },
                         },
-                      },
-                    },
-                  }}
-                >
-                  {post.markdown}
-                </Markdown>
-              </div>
-            ) : (
-              <div className={style.noText}>В этой записи текста нет!</div>
-            )}
-            <p className={style.author}>Автор поста: {post.author}</p>
-            <FormComment />
-            {comments.length > 0 ? (
-              <Comments comments={comments} />
-            ) : (
-              <div>Комментариев нет!</div>
+                      }}
+                    >
+                      {post.markdown}
+                    </Markdown>
+                  </div>
+                ) : (
+                  <div className={style.noText}>В этой записи текста нет!</div>
+                )}
+                <p className={style.author}>Автор поста: {post.author}</p>
+                <FormComment />
+                {comments.length > 0 ? (
+                  <Comments comments={comments} />
+                ) : (
+                  <div>Комментариев нет!</div>
+                )}
+              </>
             )}
           </>
         )}
-
         <button className={style.close} onClick={closeModal}>
           <CloseSrc />
         </button>
