@@ -28,7 +28,7 @@ export const postsRequestAsync = () => (dispatch, getState) => {
   dispatch(postsRequest());
   const fetchPosts = async () => {
     try {
-      const response = await axios.get(`${URL_API}/b est`, {
+      const response = await axios.get(`${URL_API}/best`, {
         headers: {
           Authorization: `bearer ${token}`,
         },

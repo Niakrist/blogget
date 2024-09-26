@@ -3,6 +3,7 @@ import Post from "./Post";
 import { useDispatch, useSelector } from "react-redux";
 import { postDelete } from "../../../store/posts/postsAction";
 import { Preloader } from "../../../ui/Preloader";
+import Tooltip from "../../Tooltip/Tooltip";
 
 export const List = () => {
   const dispatch = useDispatch();
@@ -14,10 +15,15 @@ export const List = () => {
   };
 
   if (isLoading) {
-    console.log("isLoading: ", isLoading);
     return <Preloader size={"300px"} />;
   } else if (error) {
-    return <h2>{error.message}</h2>;
+    return (
+      <Tooltip
+        error={error.message}
+        subject="Не удалось получить список постов"
+        bottom="200px"
+      />
+    );
   } else {
     return (
       <ul className={style.list}>

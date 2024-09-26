@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 // import { TokenContext } from "../../context/delete_tokenContext";
 import { useDispatch, useSelector } from "react-redux";
 import { authLogout, authRequestAsync } from "../../store/auth/action.js";
@@ -10,7 +10,7 @@ export const useAuth = () => {
   const { token } = useSelector((state) => state.token);
   const auth = useSelector((state) => state.auth.data);
   const loading = useSelector((state) => state.auth.loading);
-
+  const error = useSelector((state) => state.auth.error);
   useEffect(() => {
     dispatch(authRequestAsync());
     // dispatch(authRequest());
@@ -37,5 +37,5 @@ export const useAuth = () => {
     dispatch(authLogout());
   };
 
-  return [auth, loading, clearAuth];
+  return [auth, loading, error, clearAuth];
 };

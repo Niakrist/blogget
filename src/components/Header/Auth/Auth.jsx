@@ -7,16 +7,19 @@ import { useState } from "react";
 import { Logout } from "./Logout";
 import { useAuth } from "../../../api/hooks/useAuth.js";
 import { Preloader } from "../../../ui/Preloader/index.js";
+import Tooltip from "../../Tooltip/Tooltip.jsx";
 
 export const Auth = () => {
   // const { auth, clearAuth } = useContext(AuthContext);
-  const [auth, loading, clearAuth] = useAuth();
+  const [auth, loading, error, clearAuth] = useAuth();
   const [isLogout, setIsLogout] = useState(false);
   // const { delToken } = useContext(TokenContext);
 
   const handleClick = () => {
     setIsLogout((prevState) => !prevState);
   };
+
+  console.log("error: ", error);
 
   return (
     <>
@@ -46,6 +49,13 @@ export const Auth = () => {
           </>
         )}
       </div>
+      {error && (
+        <Tooltip
+          error={error}
+          subject="Проблема с авторизацией"
+          bottom="50px"
+        />
+      )}
     </>
   );
 };

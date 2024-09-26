@@ -9,6 +9,7 @@ import Comments from "./Comments";
 import { useDispatch, useSelector } from "react-redux";
 import { postItemRequestAsunc } from "../../store/postItem/postItemAction";
 import { Preloader } from "../../ui/Preloader";
+import Tooltip from "../Tooltip/Tooltip";
 
 export const Modal = ({ closeModal, id }) => {
   const overlayRef = useRef();
@@ -22,11 +23,6 @@ export const Modal = ({ closeModal, id }) => {
   useEffect(() => {
     dispatch(postItemRequestAsunc(id));
   }, [token]);
-
-  useEffect(() => {
-    console.log("isLoading: ", isLoading);
-    console.log("error: ", error);
-  }, [isLoading, error]);
 
   const handleClick = ({ target }) => {
     if (target === overlayRef.current) {
@@ -60,7 +56,11 @@ export const Modal = ({ closeModal, id }) => {
         {isLoading ? (
           <Preloader size="100px" />
         ) : error ? (
-          <div>Возникла ошибка: {error.message} </div>
+          <Tooltip
+            error={error.message}
+            subject={"Не удалось загрузить пост"}
+            bottom="400px"
+          />
         ) : (
           <>
             <h2 className={style.title}>{post.title}</h2>
