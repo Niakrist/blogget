@@ -25,33 +25,38 @@ export const postsRequestAsync = () => (dispatch, getState) => {
   const { token } = getState().token;
 
   if (!token) return;
+  dispatch(postsRequest());
   const fetchPosts = async () => {
-    const response = await axios.get(`${URL_API}/best`, {
-      headers: {
-        Authorization: `bearer ${token}`,
-      },
-    });
+    try {
+      const response = await axios.get(`${URL_API}/b est`, {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      });
 
-    const { data } = response.data;
+      const { data } = response.data;
 
-    const bestPostsData = [];
-    if (data.children) {
-      for (const item of data.children) {
-        bestPostsData.push({
-          id: item.data.id,
-          author: item.data.author,
-          // created: item.data.created,
-          createdUtc: item.data.created_utc,
-          // postHint: item.data.post_hint,
-          // score: item.data.score,
-          ups: item.data.ups,
-          markdown: item.data.selftext,
-          title: item.data.title,
-          thumbnail: item.data.thumbnail,
-        });
+      const bestPostsData = [];
+      if (data.children) {
+        for (const item of data.children) {
+          bestPostsData.push({
+            id: item.data.id,
+            author: item.data.author,
+            // created: item.data.created,
+            createdUtc: item.data.created_utc,
+            // postHint: item.data.post_hint,
+            // score: item.data.score,
+            ups: item.data.ups,
+            markdown: item.data.selftext,
+            title: item.data.title,
+            thumbnail: item.data.thumbnail,
+          });
+        }
+
+        dispatch(postsRequestSuccess(bestPostsData));
       }
-
-      dispatch(postsRequestSuccess(bestPostsData));
+    } catch (error) {
+      dispatch(postsRequestError(error));
     }
   };
   fetchPosts();

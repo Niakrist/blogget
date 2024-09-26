@@ -4,3 +4,19 @@
   justify-content: space-around;
   gap: 30px;
 }
+
+.post {
+  position: relative;
+  flex: 0 1 550px;
+  display: grid;
+  grid-template-columns: 100px 1fr min-content;
+  min-height: 100px;
+  grid-template-areas:
+    "img content rating"
+    "img content rating"
+    "img data rating";
+  column-gap: 20px;
+  background: var(--white);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}

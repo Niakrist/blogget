@@ -4,12 +4,10 @@ import PropTypes from "prop-types";
 import Markdown from "markdown-to-jsx";
 import ReactDOM from "react-dom";
 import { useEffect, useRef } from "react";
-import { useState } from "react";
 import FormComment from "./FormComment";
 import Comments from "./Comments";
 import { useDispatch, useSelector } from "react-redux";
 import { postItemRequestAsunc } from "../../store/postItem/postItemAction";
-import { useCommentsData } from "../../api/hooks/useCommentsData";
 import { Preloader } from "../../ui/Preloader";
 
 export const Modal = ({ closeModal, id }) => {
