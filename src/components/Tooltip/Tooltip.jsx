@@ -5,7 +5,6 @@ import { ReactComponent as ErrorIcon } from "./icon/error.svg";
 import style from "./Tooltip.module.css";
 
 const Tooltip = ({ error, subject, bottom }) => {
-  console.log("error:", error);
   return ReactDOM.createPortal(
     <div
       className={`${style.wrapper} ${error && style.error}`}

@@ -8,20 +8,24 @@ import {
 import { Preloader } from "../../../ui/Preloader";
 import Tooltip from "../../Tooltip/Tooltip";
 import { useEffect, useRef } from "react";
+import { Outlet, useParams } from "react-router-dom";
 
 export const List = () => {
   const refEndList = useRef(null);
-
   const dispatch = useDispatch();
+  const { page } = useParams();
 
   const { data: posts, isLoading, error } = useSelector((state) => state.posts);
+
+  useEffect(() => {
+    dispatch(postsRequestAsync(page));
+  }, [page]);
 
   useEffect(() => {
     if (isLoading) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          console.log(refEndList.current);
           dispatch(postsRequestAsync());
         }
       },
@@ -30,6 +34,12 @@ export const List = () => {
       }
     );
     observer.observe(refEndList.current);
+
+    // return () => {
+    //   if (refEndList.current) {
+    //     observer.unobserve(refEndList.current);
+    //   }
+    // };
   }, [refEndList.current]);
 
   const handleDelete = (id) => {
@@ -50,17 +60,20 @@ export const List = () => {
     );
   } else {
     return (
-      <ul className={style.list}>
-        {posts.map((post) => (
-          <Post
-            key={post.id}
-            post={post}
-            onDelete={handleDelete}
-            isLoading={isLoading}
-          />
-        ))}
-        <li ref={refEndList} className={style.end} />
-      </ul>
+      <>
+        <ul className={style.list}>
+          {posts.map((post) => (
+            <Post
+              key={post.id}
+              post={post}
+              onDelete={handleDelete}
+              isLoading={isLoading}
+            />
+          ))}
+          <li ref={refEndList} className={style.end} />
+        </ul>
+        <Outlet />
+      </>
     );
   }
 };

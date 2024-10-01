@@ -27,7 +27,6 @@ export const postItemReducer = (state = initialState, action) => {
         data: action.data,
         error: null,
       };
-      console.log("action.data: ", action.data);
       return el;
     case POST_ITEM_REQUEST_ERROR:
       return {

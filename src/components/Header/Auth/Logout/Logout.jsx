@@ -8,7 +8,6 @@ const Logout = ({ clearAuth }) => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    console.log("токен удален");
     dispatch(actionDeleteToken());
     clearAuth();
   };

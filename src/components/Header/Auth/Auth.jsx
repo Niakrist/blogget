@@ -19,8 +19,6 @@ export const Auth = () => {
     setIsLogout((prevState) => !prevState);
   };
 
-  console.log("error: ", error);
-
   return (
     <>
       {loading && <Preloader size="30px" />}

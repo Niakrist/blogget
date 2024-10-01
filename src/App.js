@@ -4,6 +4,7 @@ import { PostsContextProvider } from "./context/postsContext";
 import { useDispatch } from "react-redux";
 import { actionUpdateToken } from "./store/tokenReducer";
 import { getToken } from "./api/token";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch();
@@ -11,8 +12,18 @@ function App() {
 
   return (
     <PostsContextProvider>
-      <Header />
-      <Main />
+      <Routes>
+        <Route
+          path="*"
+          element={
+            <>
+              {" "}
+              <Header />
+              <Main />
+            </>
+          }
+        />
+      </Routes>
     </PostsContextProvider>
   );
 }

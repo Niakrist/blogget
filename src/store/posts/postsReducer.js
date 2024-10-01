@@ -1,5 +1,6 @@
 import {
   POST_DELETE,
+  POSTS_CHANGE_PAGE,
   POSTS_REQUEST,
   POSTS_REQUEST_AFTER,
   POSTS_REQUEST_ERROR,
@@ -13,6 +14,7 @@ const initialStat = {
   error: null,
   after: "",
   isLast: false,
+  page: "",
 };
 
 export const postsReducer = (state = initialStat, action) => {
@@ -56,8 +58,14 @@ export const postsReducer = (state = initialStat, action) => {
         error: action.error,
       };
     }
+    case POSTS_CHANGE_PAGE:
+      return {
+        ...state,
+        after: "",
+        isLast: false,
+        page: action.page,
+      };
     case POST_DELETE: {
-      console.log("+++");
       return {
         ...state,
         data: state.data.filter((item) => {

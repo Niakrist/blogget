@@ -30,10 +30,8 @@ export const tokenMiddleaware = (store) => (next) => (action) => {
 export const tokenReducer = (state = initionalState, action) => {
   switch (action.type) {
     case UPDATE_TOKEN:
-      console.log("UPDATE_TOKEN");
       return { ...state, token: action.token };
     case DELETE_TOKEN:
-      console.log("DELETE_TOKEN");
       return { ...state, token: "" };
     default:
       return state;

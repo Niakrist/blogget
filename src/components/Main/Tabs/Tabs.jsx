@@ -10,12 +10,15 @@ import { ReactComponent as BestIcon } from "./img/best.svg";
 import { ReactComponent as HotIcon } from "./img/hot.svg";
 import { debounceRaf } from "../../../utils/debounce";
 import { Text } from "../../../ui/Text";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { postChangePage } from "../../../store/posts/postsAction";
 
 const LIST = [
-  { value: "Главная", Icon: HomeIcon },
-  { value: "Топ", Icon: TopIcon },
-  { value: "Лучшие", Icon: BestIcon },
-  { value: "Горячие", Icon: HotIcon },
+  { value: "Главная", Icon: HomeIcon, link: "rising" },
+  { value: "Топ", Icon: TopIcon, link: "top" },
+  { value: "Лучшие", Icon: BestIcon, link: "best" },
+  { value: "Горячие", Icon: HotIcon, link: "hot" },
 ].map(assignId);
 
 export const Tabs = () => {
@@ -23,6 +26,8 @@ export const Tabs = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDropDown, setIsDropDown] = useState(false);
   const [itemMenu, setItemMenu] = useState("Меню");
+
+  const navigate = useNavigate();
 
   const selectItemMenu = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -34,6 +39,11 @@ export const Tabs = () => {
     } else {
       setIsDropDown(false);
     }
+  };
+
+  const handleCkick = (link, value) => {
+    setItemMenu(value);
+    navigate(`/category/${link}`);
   };
 
   useEffect(() => {
@@ -55,12 +65,14 @@ export const Tabs = () => {
       </div>
       {(isDropdownOpen || !isDropDown) && (
         <ul className={style.list} onClick={() => setIsDropdownOpen(false)}>
-          {tabs.map(({ value, id, Icon }) => (
+          {tabs.map(({ value, id, Icon, link }) => (
             <li className={style.item} key={id}>
               <Text
                 As="button"
                 className={style.btn}
-                onClick={() => setItemMenu(value)}
+                onClick={() => {
+                  handleCkick(link, value);
+                }}
               >
                 {value} {Icon && <Icon width={30} height={30} />}
               </Text>

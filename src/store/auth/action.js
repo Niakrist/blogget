@@ -43,7 +43,7 @@ export const authRequestAsync = () => (dispatch, getState) => {
       const {
         data: { name, icon_img: iconImg },
       } = response;
-      const img = iconImg?.replace(/\?.*?/, "");
+      const img = iconImg?.replace(/\?.*$/, "");
       dispatch(authRequestSuccess({ name, img }));
     } catch (error) {
       console.log("Перехват ошибки! ", error);

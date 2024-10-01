@@ -10,9 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { postItemRequestAsunc } from "../../store/postItem/postItemAction";
 import { Preloader } from "../../ui/Preloader";
 import Tooltip from "../Tooltip/Tooltip";
+import { useParams, useNavigate } from "react-router-dom";
 
-export const Modal = ({ closeModal, id }) => {
+export const Modal = () => {
   const overlayRef = useRef();
+
+  const { id, page } = useParams();
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.token);
@@ -23,6 +27,10 @@ export const Modal = ({ closeModal, id }) => {
   useEffect(() => {
     dispatch(postItemRequestAsunc(id));
   }, [token]);
+
+  const closeModal = () => {
+    navigate(`/category/${page}`);
+  };
 
   const handleClick = ({ target }) => {
     if (target === overlayRef.current) {
@@ -49,7 +57,7 @@ export const Modal = ({ closeModal, id }) => {
       document.removeEventListener("keydown", handleKeydown);
     };
   }, []);
-  console.log("error: ", error);
+
   return ReactDOM.createPortal(
     <div className={style.overlay} ref={overlayRef}>
       <div className={style.modal}>
@@ -96,7 +104,7 @@ export const Modal = ({ closeModal, id }) => {
             )}
           </>
         )}
-        <button className={style.close} onClick={closeModal}>
+        <button className={style.close} onClick={() => closeModal()}>
           <CloseSrc />
         </button>
       </div>

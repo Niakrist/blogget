@@ -27,7 +27,6 @@ export const FormComment = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(comment);
   };
 
   const handleChange = (e) => {
