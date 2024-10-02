@@ -1,0 +1,13 @@
+.notFound {
+  padding-top: 150px;
+  text-align: center;
+  color: var(--orange);
+  font-size: 36px;
+}
+
+@media (max-width: 580px) {
+  .notFound {
+    padding-top: 50px;
+    font-size: 24px;
+  }
+}

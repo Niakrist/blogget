@@ -4,6 +4,8 @@ import Tabs from "./Tabs";
 import style from "./Main.module.css";
 import { Route, Routes } from "react-router-dom";
 import Modal from "../Modal";
+import { Home } from "./Home";
+import { NotFound } from "./NotFound";
 
 export const Main = () => {
   return (
@@ -11,9 +13,11 @@ export const Main = () => {
       <Layout>
         <Tabs />
         <Routes>
+          <Route path={"/"} element={<Home />} />
           <Route path={`/category/:page`} element={<List />}>
             <Route path={`/category/:page/post/:id`} element={<Modal />} />
           </Route>
+          <Route path={"*"} element={<NotFound />} />
         </Routes>
       </Layout>
     </main>

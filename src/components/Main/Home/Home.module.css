@@ -1,0 +1,18 @@
+.home {
+  padding: 30px 0;
+  text-align: center;
+}
+.title {
+  margin-bottom: 30px;
+  font-size: 32px;
+}
+
+.text:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 580px) {
+  .title {
+    font-size: 24px;
+  }
+}

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { actionUpdateToken } from "./store/tokenReducer";
 import { getToken } from "./api/token";
 import { Route, Routes } from "react-router-dom";
+import { Home } from "./components/Main/Home";
 
 function App() {
   const dispatch = useDispatch();
@@ -17,7 +18,6 @@ function App() {
           path="*"
           element={
             <>
-              {" "}
               <Header />
               <Main />
             </>
