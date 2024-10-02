@@ -5,7 +5,7 @@ import {
   postDelete,
   postsRequestAsync,
 } from "../../../store/posts/postsAction";
-import { Preloader } from "../../../ui/Preloader";
+// import { Preloader } from "../../../ui/Preloader";
 import Tooltip from "../../Tooltip/Tooltip";
 import { useEffect, useRef } from "react";
 import { Outlet, useParams } from "react-router-dom";
@@ -44,6 +44,9 @@ export const List = () => {
 
   const handleDelete = (id) => {
     dispatch(postDelete(id));
+  };
+  const handleClick = () => {
+    dispatch(postsRequestAsync());
   };
 
   // if (isLoading) {

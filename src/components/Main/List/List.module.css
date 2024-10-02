@@ -24,3 +24,13 @@
 .end {
   flex-basis: 100%;
 }
+
+.downLoadPosts {
+  padding: 15px 0;
+  height: 60px;
+  width: 100%;
+  background-color: var(--orange);
+  border: none;
+  border-radius: 18px;
+  color: var(--white);
+}

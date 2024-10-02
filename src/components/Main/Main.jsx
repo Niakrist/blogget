@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import Modal from "../Modal";
 import { Home } from "./Home";
 import { NotFound } from "./NotFound";
+import { AuthUser } from "./AuthUser";
 
 export const Main = () => {
   return (
@@ -14,6 +15,8 @@ export const Main = () => {
         <Tabs />
         <Routes>
           <Route path={"/"} element={<Home />} />
+          <Route path={"/auth"} element={<AuthUser />} />
+
           <Route path={`/category/:page`} element={<List />}>
             <Route path={`/category/:page/post/:id`} element={<Modal />} />
           </Route>
