@@ -11,6 +11,7 @@ import { postItemRequestAsunc } from "../../store/postItem/postItemAction";
 import { Preloader } from "../../ui/Preloader";
 import Tooltip from "../Tooltip/Tooltip";
 import { useParams, useNavigate } from "react-router-dom";
+import { commentsSliceAsync } from "../../store/comment/commentSlice";
 
 export const Modal = () => {
   const overlayRef = useRef();
@@ -21,11 +22,12 @@ export const Modal = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.token);
 
-  const { isLoading, error } = useSelector((state) => state.postItem);
-  const [post, comments] = useSelector((state) => state.postItem.data);
+  const { isLoading, error } = useSelector((state) => state.comments);
+  const [post, comments] = useSelector((state) => state.comments.data);
 
   useEffect(() => {
-    dispatch(postItemRequestAsunc(id));
+    // dispatch(postItemRequestAsunc(id));
+    dispatch(commentsSliceAsync(id));
   }, [token]);
 
   const closeModal = () => {
