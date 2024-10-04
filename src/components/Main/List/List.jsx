@@ -1,7 +1,10 @@
 import style from "./List.module.css";
 import Post from "./Post";
 import { useDispatch, useSelector } from "react-redux";
-import { postDelete } from "../../../store/posts/postsAction";
+import {
+  postDelete,
+  postsRequestAsync,
+} from "../../../store/posts/postsAction";
 // import { Preloader } from "../../../ui/Preloader";
 import Tooltip from "../../Tooltip/Tooltip";
 import { useEffect, useRef } from "react";
@@ -12,6 +15,8 @@ export const List = () => {
   const refEndList = useRef(null);
   const dispatch = useDispatch();
   const { page } = useParams();
+
+  console.log("page: ", page);
 
   const { data: posts, isLoading, error } = useSelector((state) => state.posts);
 
@@ -37,12 +42,12 @@ export const List = () => {
       observer.observe(refEndList.current);
     }
 
-    // return () => {
-    //   if (refEndList.current) {
-    //     observer.unobserve(refEndList.current);
-    //   }
-    // };
-  }, []);
+    return () => {
+      if (refEndList.current) {
+        observer.unobserve(refEndList.current);
+      }
+    };
+  }, [refEndList.current]);
 
   const handleDelete = (id) => {
     dispatch(postDelete(id));

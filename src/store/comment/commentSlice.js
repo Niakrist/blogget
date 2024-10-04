@@ -5,8 +5,6 @@ import { URL_API } from "../../api/const";
 export const commentsSliceAsync = createAsyncThunk(
   "comments/fetch",
   async (id, thunkAPI) => {
-    console.log("++++");
-
     const { token } = thunkAPI.getState().token;
 
     if (!token) return;

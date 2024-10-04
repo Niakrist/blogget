@@ -10,14 +10,20 @@ export const postsSlice = createSlice({
     error: null,
     after: "",
     isLast: false,
+    page: "",
   },
   reducers: {
-    setNewPage: (state) => {
+    setNewPage: (state, action) => {
+      console.log("action: ", action);
       state.isLoading = false;
       state.data = [];
       state.error = null;
       state.after = "";
       state.isLast = false;
+      state.page = action.payload;
+    },
+    addPosts: (state, action) => {
+      state.data = [...state.data, ...action.payload.bestPostsData];
     },
   },
   extraReducers: (builder) => {
@@ -29,7 +35,7 @@ export const postsSlice = createSlice({
       })
       .addCase(postsRequestAsync2.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.data = [...action.payload.bestPostsData];
+        state.data = action.payload.bestPostsData;
         state.error = null;
         state.after = action.payload.data.after;
         state.isLast = !action.after;
@@ -49,22 +55,23 @@ export const postsSlice = createSlice({
 export const postsRequestAsync2 = createAsyncThunk(
   "posts2/fetch",
   async (neWpage, thunkAPI) => {
-    let { token, after, loading, isLast, page } = thunkAPI.getState().token;
+    let { token } = thunkAPI.getState().token;
+    let { after, loading, isLast, page } = thunkAPI.getState().posts;
     const oldPost = thunkAPI.getState().posts.data;
 
     if (neWpage) {
       page = neWpage;
-      thunkAPI.dispatch(postsSlice.actions.setNewPage());
+      thunkAPI.dispatch(postsSlice.actions.setNewPage(page));
     }
 
-    if (!token || loading || isLast) return;
+    if (!page || !token || loading || isLast) return;
     console.log(
       `${URL_API}/${neWpage}?limit=8${after ? "&after=" + after : ""}`
     );
 
     try {
       const response = await axios.get(
-        `${URL_API}/${neWpage}?limit=8${after ? "&after=" + after : ""}`,
+        `${URL_API}/best?limit=8${after ? "&after=" + after : ""}`,
         {
           headers: {
             Authorization: `bearer ${token}`,
@@ -91,8 +98,12 @@ export const postsRequestAsync2 = createAsyncThunk(
           });
         }
 
-        bestPostsData = [...oldPost, ...bestPostsData];
-        return { bestPostsData, data, page };
+        if (!after) {
+          return { bestPostsData, data, page };
+        } else {
+          bestPostsData = [...oldPost, ...bestPostsData];
+          return { bestPostsData, data, page };
+        }
       }
     } catch (error) {
       return error;
