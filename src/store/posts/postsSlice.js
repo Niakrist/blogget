@@ -14,7 +14,6 @@ export const postsSlice = createSlice({
   },
   reducers: {
     setNewPage: (state, action) => {
-      console.log("action: ", action);
       state.isLoading = false;
       state.data = [];
       state.error = null;
@@ -65,9 +64,6 @@ export const postsRequestAsync2 = createAsyncThunk(
     }
 
     if (!page || !token || loading || isLast) return;
-    console.log(
-      `${URL_API}/${neWpage}?limit=8${after ? "&after=" + after : ""}`
-    );
 
     try {
       const response = await axios.get(

@@ -16,8 +16,6 @@ export const List = () => {
   const dispatch = useDispatch();
   const { page } = useParams();
 
-  console.log("page: ", page);
-
   const { data: posts, isLoading, error } = useSelector((state) => state.posts);
 
   useEffect(() => {
@@ -30,7 +28,6 @@ export const List = () => {
       (entries) => {
         if (entries[0].isIntersecting) {
           // observer.observe(refEndList.current);
-          console.log("postsRequestAsync2");
           dispatch(postsRequestAsync2(page));
         }
       },
