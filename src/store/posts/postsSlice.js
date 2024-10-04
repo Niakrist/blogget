@@ -2,20 +2,69 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { URL_API } from "../../api/const";
 
-export const postsRequestAsync = createAsyncThunk(
-  "posts/fetch",
-  async (newPage, thunkAPI) => {
-    let page = thunkAPI.getState().posts.page;
-    const { token } = thunkAPI.getState().token;
+export const postsSlice = createSlice({
+  name: "posts2",
+  initialState: {
+    isLoading: false,
+    data: [],
+    error: null,
+    after: "",
+    isLast: false,
+  },
+  reducers: {
+    setNewPage: (state) => {
+      state.isLoading = false;
+      state.data = [];
+      state.error = null;
+      state.after = "";
+      state.isLast = false;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(postsRequestAsync2.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+        state.isLast = false;
+      })
+      .addCase(postsRequestAsync2.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.data = [...action.payload.bestPostsData];
+        state.error = null;
+        state.after = action.payload.data.after;
+        state.isLast = !action.after;
+        state.page = action.payload.page;
+      })
+      .addCase(postsRequestAsync2.rejected, (state, action) => {
+        state.isLoading = false;
+        state.data = [];
+        state.error = action.payload;
+        state.after = "";
+        state.isLast = "";
+        state.page = "";
+      });
+  },
+});
 
-    const after = thunkAPI.getState().posts.after;
-    const loading = thunkAPI.getState().posts.loading;
-    const isLast = thunkAPI.getState().posts.isLast;
-    if (!token) return;
+export const postsRequestAsync2 = createAsyncThunk(
+  "posts2/fetch",
+  async (neWpage, thunkAPI) => {
+    let { token, after, loading, isLast, page } = thunkAPI.getState().token;
+    const oldPost = thunkAPI.getState().posts.data;
+
+    if (neWpage) {
+      page = neWpage;
+      thunkAPI.dispatch(postsSlice.actions.setNewPage());
+    }
+
     if (!token || loading || isLast) return;
+    console.log(
+      `${URL_API}/${neWpage}?limit=8${after ? "&after=" + after : ""}`
+    );
+
     try {
       const response = await axios.get(
-        `${URL_API}/${page}?limit=8${after ? "&after=" + after : ""}`,
+        `${URL_API}/${neWpage}?limit=8${after ? "&after=" + after : ""}`,
         {
           headers: {
             Authorization: `bearer ${token}`,
@@ -23,9 +72,9 @@ export const postsRequestAsync = createAsyncThunk(
         }
       );
 
-      const { data } = response.data;
+      const { data } = await response.data;
 
-      const bestPostsData = [];
+      let bestPostsData = [];
       if (data.children) {
         for (const item of data.children) {
           bestPostsData.push({
@@ -41,6 +90,9 @@ export const postsRequestAsync = createAsyncThunk(
             thumbnail: item.data.thumbnail,
           });
         }
+
+        bestPostsData = [...oldPost, ...bestPostsData];
+        return { bestPostsData, data, page };
       }
     } catch (error) {
       return error;
@@ -48,16 +100,6 @@ export const postsRequestAsync = createAsyncThunk(
   }
 );
 
-export const postsSlice = createSlice({
-  name: "posts",
-  initialState: {
-    isLoading: false,
-    data: [],
-    error: null,
-    after: "",
-    isLast: false,
-    page: "",
-  },
-  reducers: {},
-  extraReducers: {},
-});
+export const { setNewPage } = postsSlice.actions;
+
+export default postsSlice.reducer;

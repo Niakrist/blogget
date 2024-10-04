@@ -7,7 +7,6 @@ import { useEffect, useRef } from "react";
 import FormComment from "./FormComment";
 import Comments from "./Comments";
 import { useDispatch, useSelector } from "react-redux";
-import { postItemRequestAsunc } from "../../store/postItem/postItemAction";
 import { Preloader } from "../../ui/Preloader";
 import Tooltip from "../Tooltip/Tooltip";
 import { useParams, useNavigate } from "react-router-dom";
@@ -87,8 +86,7 @@ export const Modal = () => {
                             },
                           },
                         },
-                      }}
-                    >
+                      }}>
                       {post.markdown}
                     </Markdown>
                   </div>

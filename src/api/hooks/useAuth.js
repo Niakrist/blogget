@@ -13,24 +13,6 @@ export const useAuth = () => {
   const error = useSelector((state) => state.auth.error);
   useEffect(() => {
     dispatch(authRequestAsync());
-    // dispatch(authRequest());
-    // axios(`${URL_API}/api/v1/me`, {
-    //   headers: {
-    //     Authorization: `bearer ${token}`,
-    //   },
-    // })
-    //   .then(({ data: { name, icon_img: iconImg } }) => {
-    //     const img = iconImg?.replace(/\?.*?/, "");
-    //     const data = { name, img };
-    //     setAuth(data);
-    //     dispatch(authRequestSuccess(data));
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     setAuth({});
-    //     dispatch(actionDeleteToken());
-    //     dispatch(authRequestError(err));
-    //   });
   }, [token]);
 
   const clearAuth = () => {

@@ -1,14 +1,12 @@
 import style from "./List.module.css";
 import Post from "./Post";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  postDelete,
-  postsRequestAsync,
-} from "../../../store/posts/postsAction";
+import { postDelete } from "../../../store/posts/postsAction";
 // import { Preloader } from "../../../ui/Preloader";
 import Tooltip from "../../Tooltip/Tooltip";
 import { useEffect, useRef } from "react";
 import { Outlet, useParams } from "react-router-dom";
+import { postsRequestAsync2 } from "../../../store/posts/postsSlice";
 
 export const List = () => {
   const refEndList = useRef(null);
@@ -18,7 +16,7 @@ export const List = () => {
   const { data: posts, isLoading, error } = useSelector((state) => state.posts);
 
   useEffect(() => {
-    dispatch(postsRequestAsync(page));
+    dispatch(postsRequestAsync2(page));
   }, [page]);
 
   useEffect(() => {
@@ -26,27 +24,28 @@ export const List = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          dispatch(postsRequestAsync());
+          // observer.observe(refEndList.current);
+          console.log("postsRequestAsync2");
+          dispatch(postsRequestAsync2(page));
         }
       },
       {
         rootMargin: "100px",
       }
     );
-    observer.observe(refEndList.current);
+    if (refEndList.current) {
+      observer.observe(refEndList.current);
+    }
 
     // return () => {
     //   if (refEndList.current) {
     //     observer.unobserve(refEndList.current);
     //   }
     // };
-  }, [refEndList.current]);
+  }, []);
 
   const handleDelete = (id) => {
     dispatch(postDelete(id));
-  };
-  const handleClick = () => {
-    dispatch(postsRequestAsync());
   };
 
   // if (isLoading) {
@@ -73,7 +72,9 @@ export const List = () => {
               isLoading={isLoading}
             />
           ))}
-          <li ref={refEndList} className={style.end} />
+          <li ref={refEndList} className={style.end}>
+            1
+          </li>
         </ul>
         <Outlet />
       </>
