@@ -1,22 +1,25 @@
 import style from "./List.module.css";
 import Post from "./Post";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  postDelete,
-  postsRequestAsync,
-} from "../../../store/posts/postsAction";
+// import { postDelete } from "../../../store/posts/postsAction";
 // import { Preloader } from "../../../ui/Preloader";
 import Tooltip from "../../Tooltip/Tooltip";
 import { useEffect, useRef } from "react";
 import { Outlet, useParams } from "react-router-dom";
 import { postsRequestAsync2 } from "../../../store/posts/postsSlice";
+import Preloader from "../../../ui/Preloader/Preloader";
 
 export const List = () => {
   const refEndList = useRef(null);
   const dispatch = useDispatch();
   const { page } = useParams();
 
-  const { data: posts, isLoading, error } = useSelector((state) => state.posts);
+  const {
+    data: posts,
+    isLoading,
+    error,
+    after,
+  } = useSelector((state) => state.posts);
 
   useEffect(() => {
     dispatch(postsRequestAsync2(page));
@@ -24,35 +27,35 @@ export const List = () => {
 
   useEffect(() => {
     if (isLoading) return;
+    if (!after) return;
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
           // observer.observe(refEndList.current);
-          dispatch(postsRequestAsync2(page));
+          dispatch(postsRequestAsync2());
         }
       },
       {
         rootMargin: "100px",
       }
     );
-    if (refEndList.current) {
-      observer.observe(refEndList.current);
-    }
+
+    observer.observe(refEndList.current);
 
     return () => {
       if (refEndList.current) {
         observer.unobserve(refEndList.current);
       }
     };
-  }, [refEndList.current]);
+  }, [refEndList.current, after]);
 
   const handleDelete = (id) => {
-    dispatch(postDelete(id));
+    console.log(id);
   };
 
   // if (isLoading) {
   //   return <Preloader size={"300px"} />;
-  // } else
+  // }
 
   if (error) {
     return (
@@ -66,6 +69,9 @@ export const List = () => {
     return (
       <>
         <ul className={style.list}>
+          {/* {!posts.length && (
+            <li className={style.end}>Постов в выбранной рубрики нет</li>
+          )} */}
           {posts.map((post) => (
             <Post
               key={post.id}
@@ -74,9 +80,7 @@ export const List = () => {
               isLoading={isLoading}
             />
           ))}
-          <li ref={refEndList} className={style.end}>
-            1
-          </li>
+          <li ref={refEndList} className={style.end}></li>
         </ul>
         <Outlet />
       </>

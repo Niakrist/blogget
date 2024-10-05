@@ -94,5 +94,4 @@ export const postsRequestAsync = (newPage) => (dispatch, getState) => {
       dispatch(postsRequestError(error));
     }
   };
-  fetchPosts();
 };
