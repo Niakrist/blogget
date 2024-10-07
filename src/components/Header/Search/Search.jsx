@@ -1,10 +1,28 @@
+import { useDispatch, useSelector } from "react-redux";
 import style from "./Search.module.css";
+import { useState } from "react";
+import { searchRequest } from "../../../store/search/searchAction";
 
 export const Search = () => {
+  const [search, setSearch] = useState("");
+  const { token } = useSelector((state) => state.token);
+
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(searchRequest({ token, search }));
+  };
+
   return (
-    <form className={style.form}>
-      <input className={style.search} type="search" />
-      <button className={style.button}>
+    <form className={style.form} onSubmit={handleSubmit}>
+      <input
+        onChange={(e) => setSearch(e.target.value)}
+        value={search}
+        className={style.search}
+        type="search"
+      />
+      <button className={style.button} type="submit">
         <svg
           className={style.svg}
           width="128"
